@@ -28,7 +28,16 @@ public class DucScanner extends ScannerPolling {
             return;
         }
         block.getTransactions()
-                .forEach(transaction -> addressTransactions.add(null, transaction));
+                .forEach(transaction -> {
+                    transaction.getOutputs().forEach(output -> {
+                        addressTransactions.add(
+                                output.getAddress(),
+                                transaction
+                        );
+                    });
+//                    eventPublisher.publish(new NewTransactionEvent(networkType, block, output));
+                });
+
         eventPublisher.publish(new NewBlockEvent(network.getType(), block, addressTransactions));
     }
 }

@@ -6,35 +6,51 @@ import io.mywish.blockchain.WrapperBlock;
 import io.mywish.blockchain.WrapperNetwork;
 import io.mywish.blockchain.WrapperTransaction;
 import io.mywish.blockchain.WrapperTransactionReceipt;
+import io.mywish.ducatus.blockchain.helper.DucBlockParser;
+import org.bitcoinj.core.NetworkParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigInteger;
 
 public class DucNetwork extends WrapperNetwork {
-    private final BtcdClient ducClient;
+    final private BtcdClient ducdClient;
 
     @Autowired
     private WrapperBlockDucService blockBuilder;
 
-    public DucNetwork(NetworkType type, BtcdClient ducClient) {
+    private final NetworkParameters networkParameters;
+
+    @Autowired
+    private DucBlockParser ducBlockParser;
+
+    public DucNetwork(NetworkType type, BtcdClient ducdClient, NetworkParameters networkParameters) {
         super(type);
-        this.ducClient = ducClient;
+        this.ducdClient = ducdClient;
+        this.networkParameters = networkParameters;
     }
 
     @Override
     public Long getLastBlock() throws Exception {
-        return ducClient.getBlockCount().longValue();
+        return ducdClient.getBlockCount().longValue();
     }
 
     @Override
     public WrapperBlock getBlock(String hash) throws Exception {
-        long height = ducClient.getBlock(hash).getHeight();
-        return blockBuilder.build(ducClient.getBlock(hash), height);
+        // TODO optimize
+        long height = ducdClient.getBlock(hash).getHeight();
+        return blockBuilder.build(
+                ducBlockParser.parse(
+                        networkParameters,
+                        (String) ducdClient.getBlock(hash, false)
+                ),
+                height,
+                networkParameters
+        );
     }
 
     @Override
     public WrapperBlock getBlock(Long number) throws Exception {
-        String hash = ducClient.getBlockHash(number.intValue());
+        String hash = ducdClient.getBlockHash(number.intValue());
         return getBlock(hash);
     }
 

@@ -1,4 +1,4 @@
-package io.mywish.btc.blockchain.services;
+package io.mywish.ducatus.blockchain.services;
 
 import io.mywish.blockchain.WrapperOutput;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class WrapperOutputBtcService {
+public class WrapperOutputDucService {
     public WrapperOutput build(Transaction transaction, TransactionOutput output, NetworkParameters networkParameters) {
         Script script;
         try {
