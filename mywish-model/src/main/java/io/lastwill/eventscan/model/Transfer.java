@@ -10,7 +10,6 @@ import java.math.BigInteger;
 @Entity
 @Table(name = "transfer")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Transfer {
     @Id
     private long id;

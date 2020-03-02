@@ -10,7 +10,6 @@ import java.math.BigInteger;
 @Entity
 @Table(name = "exchange")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Exchange {
     @Id
     private long id;
