@@ -8,9 +8,5 @@ public enum TransactionStatus {
     DONE,
     ERROR,
     OK,
-    WAITING;
-
-    TransactionStatus() {
-    }
-
+    WAITING
 }

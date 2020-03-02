@@ -16,4 +16,7 @@ public interface TransferRepository extends CrudRepository<Transfer, Long> {
 
     @Query("select c from Transfer c where c.exchangeId in :exchangeId")
     List<Transfer> findByExchangeId(@Param("exchangeId") Collection<Long> exchangeId);
+
+    List<Transfer> findAllByStatus(@Param("status") TransactionStatus status);
+
 }
