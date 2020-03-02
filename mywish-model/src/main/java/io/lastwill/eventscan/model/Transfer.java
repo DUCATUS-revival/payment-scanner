@@ -8,19 +8,24 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "transfers_ducatustransfer")
+@Table(name = "transfer")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DucatusTransfer {
+public class Transfer {
     @Id
     private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "exchange_id", referencedColumnName = "id")
+    private Exchange exchangeId;
+
     @Column(name = "tx_hash")
     private String txHash;
+
     @Column(name = "amount")
     private BigInteger amount;
-    @ManyToOne
-    @JoinColumn(name = "request_id")
-    private UserAddressExchange userAddressExchange;
-    @Column(name = "state")
-    private String state;
+
+    @Column(name = "status")
+    private TransactionStatus status;
+
 }
