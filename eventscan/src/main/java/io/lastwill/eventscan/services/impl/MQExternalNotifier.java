@@ -32,10 +32,8 @@ public class MQExternalNotifier implements ExternalNotifier {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Value("${io.lastwill.eventscan.backend-mq.queue.ethereum}")
-    private String queueNameEthereum;
-    @Value("${io.lastwill.eventscan.backend-mq.queue.btc-mainnet}")
-    private String queueNameBtcMainnet;
+    @Value("${io.lastwill.eventscan.backend-mq.queue.ducatusx-mainnet}")
+    private String queueNameDucxMainnet;
     @Value("${io.lastwill.eventscan.backend-mq.queue.duc-mainnet}")
     private String queueNameDucMainnet;
 
@@ -52,10 +50,7 @@ public class MQExternalNotifier implements ExternalNotifier {
 
     @PostConstruct
     protected void init() throws IOException, TimeoutException {
-        queueByNetwork.put(NetworkType.ETHEREUM_MAINNET, queueNameEthereum);
-
-        queueByNetwork.put(NetworkType.BTC_MAINNET, queueNameBtcMainnet);
-
+        queueByNetwork.put(NetworkType.DUCATUSX_MAINNET, queueNameDucxMainnet);
         queueByNetwork.put(NetworkType.DUCATUS_MAINNET, queueNameDucMainnet);
 
         connection = factory.newConnection();

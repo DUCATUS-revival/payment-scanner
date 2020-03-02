@@ -14,7 +14,12 @@ public abstract class PaymentEvent extends BaseEvent {
     private final CryptoCurrency currency;
     private final boolean isSuccess;
 
-    public PaymentEvent(NetworkType networkType, WrapperTransaction transaction, String address, BigInteger amount, CryptoCurrency currency, boolean isSuccess) {
+    public PaymentEvent(NetworkType networkType,
+                        WrapperTransaction transaction,
+                        String address,
+                        BigInteger amount,
+                        CryptoCurrency currency,
+                        boolean isSuccess) {
         super(networkType);
         this.transaction = transaction;
         this.address = address;
