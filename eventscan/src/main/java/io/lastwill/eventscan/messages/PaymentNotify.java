@@ -9,14 +9,12 @@ import java.math.BigInteger;
 @ToString(callSuper = true)
 @Getter
 public class PaymentNotify extends BaseNotify {
-    private final long userId;
     private final BigInteger amount;
     private final CryptoCurrency currency;
     private final boolean isSuccess;
 
-    public PaymentNotify(long userId, BigInteger amount, PaymentStatus status, String txHash, CryptoCurrency currency, boolean isSuccess) {
+    public PaymentNotify( BigInteger amount, PaymentStatus status, String txHash, CryptoCurrency currency, boolean isSuccess) {
         super(status, txHash);
-        this.userId = userId;
         this.amount = amount;
         this.currency = currency;
         this.isSuccess = isSuccess;

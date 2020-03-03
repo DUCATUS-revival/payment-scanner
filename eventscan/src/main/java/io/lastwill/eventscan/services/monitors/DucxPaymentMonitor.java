@@ -9,6 +9,7 @@ import io.mywish.scanner.model.NewBlockEvent;
 import io.mywish.scanner.services.EventPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -22,17 +23,15 @@ public class DucxPaymentMonitor {
     @Autowired
     private EventPublisher eventPublisher;
 
-//    @Autowired
-//    private PaymentEthRepository paymentEthRepository;
-
-private String ducxStorageAddress = "0x8939e82b69fa1bc50d59dcf4acaaab5938fd92a1";
+    @Value("${io.lastwill.eventscan.ducx.storage}")
+    private String ducxStorageAddress;
 
     @Autowired
     private TransactionProvider transactionProvider;
 
     @EventListener
     private void onNewBlockEvent(NewBlockEvent event) {
-        // payments only in mainnet works
+
         if (event.getNetworkType() != NetworkType.DUCATUSX_MAINNET) {
             return;
         }
@@ -48,8 +47,6 @@ private String ducxStorageAddress = "0x8939e82b69fa1bc50d59dcf4acaaab5938fd92a1"
             return;
         }
 
-//        List<PaymentDetailsETH> paymentDetails = paymentEthRepository.findByRxAddress(addresses, "false");
-       // for (PaymentDetailsETH paymentDetailsETH : paymentDetails) {
         for (WrapperTransaction tx: txes) {
             final List<WrapperTransaction> transactions = event.getTransactionsByAddress().get(
                     ducxStorageAddress.toLowerCase()
@@ -68,15 +65,13 @@ private String ducxStorageAddress = "0x8939e82b69fa1bc50d59dcf4acaaab5938fd92a1"
 
                 log.warn("VALUE: {}", transaction.getOutputs().get(0).getValue());
 
-//                if (paymentDetailsETH.getValue().equals(transaction.getOutputs().get(0).getValue())) {
-
                 transactionProvider.getTransactionReceiptAsync(event.getNetworkType(), transaction)
                         .thenAccept(receipt -> {
                             eventPublisher.publish(new UserPaymentEvent(
                                     NetworkType.DUCATUSX_MAINNET,
                                     tx,
                                     transaction.getOutputs().get(0).getValue(),
-                                    CryptoCurrency.DUC,
+                                    CryptoCurrency.DUCX,
                                     true
                             ));
                         })
@@ -85,10 +80,8 @@ private String ducxStorageAddress = "0x8939e82b69fa1bc50d59dcf4acaaab5938fd92a1"
                             return null;
                         });
 
-                  //  paymentEthRepository.updatePaymentStatus( paymentDetailsETH.getRxAddress(),"true");
                 log.warn("\u001B[32m"+ "|DUCATUSX STORAGE| {} DUCX RECEIVED !" + "\u001B[0m",transaction.getOutputs().get(0).getValue());
 
-//            }
             });
         }
     }
