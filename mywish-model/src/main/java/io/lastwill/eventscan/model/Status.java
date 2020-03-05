@@ -4,9 +4,11 @@ import lombok.Getter;
 
 
 @Getter
-public enum TransactionStatus {
+public enum Status {
     DONE,
     ERROR,
     OK,
-    WAITING_FOR_CONFIRMATION
+    WAITING_FOR_CONFIRMATION,
+    OVERPAID,
+    INSUFFICIENT,
 }

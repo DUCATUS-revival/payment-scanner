@@ -16,6 +16,8 @@ public interface PaymentDucRepository extends CrudRepository<PaymentDetailsDUC, 
     @Query("select c from PaymentDetailsDUC c where c.rxAddress in :rxAddress and c.status = :status")
     List<PaymentDetailsDUC> findByRxAddress(@Param("rxAddress") Collection<String> rxAddress, @Param("status") String status);
 
+    PaymentDetailsDUC findFirstByRxAddress(@Param("rx_address") String address);
+
     @Modifying
     @Transactional
     @Query("update PaymentDetailsDUC paymentDetailsDUC set paymentDetailsDUC.status = :status where paymentDetailsDUC.rxAddress = :rxAddress")

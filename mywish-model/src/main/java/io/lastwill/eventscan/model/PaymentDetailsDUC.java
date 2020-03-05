@@ -3,10 +3,7 @@ package io.lastwill.eventscan.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
@@ -16,8 +13,6 @@ import java.math.BigInteger;
 public class PaymentDetailsDUC {
     @Id
     private int id;
-    @Column(name = "cart_id")
-    private BigInteger cartId;
     @Column(name = "rx_address")
     private String rxAddress;
     @Column(name = "amount")
@@ -27,7 +22,8 @@ public class PaymentDetailsDUC {
     @Column(name = "shop")
     private String shop;
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 
 public PaymentDetailsDUC() {}

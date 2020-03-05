@@ -6,12 +6,16 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "transfer")
+@Table(name = "transaction")
 @Getter
-public class Transfer {
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @OneToMany
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+    private PaymentDetailsDUC paymentDetailsDUC;
 
     @Column(name = "tx_hash")
     private String txHash;
@@ -21,6 +25,11 @@ public class Transfer {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private TransactionStatus status;
+    private Status status;
+
+    public Transaction(PaymentDetailsDUC paymentDetailsDUC, BigInteger amount) {
+        this.paymentDetailsDUC = paymentDetailsDUC;
+        this.amount = amount;
+    }
 
 }
